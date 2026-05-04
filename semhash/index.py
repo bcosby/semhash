@@ -180,7 +180,9 @@ def _parse_string_list_field(raw, key):
     if i < 0:
         raise ValueError("invalid index file")
     j = raw.find("[", i)
-    k = raw.find("]", j)
+    if j < 0:
+        raise ValueError("invalid index file")
+    k = _find_list_end(raw, j)
     body = raw[j + 1:k].strip()
     if not body:
         return []
@@ -212,3 +214,23 @@ def _parse_string_list_field(raw, key):
         else:
             cur += ch
     return parts
+
+
+def _find_list_end(raw, list_start):
+    in_str = False
+    esc = False
+    for idx in range(list_start + 1, len(raw)):
+        ch = raw[idx]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "]":
+            return idx
+    raise ValueError("invalid index file")
