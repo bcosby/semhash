@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semhash"
+version = "0.1.0"
+description = "Compress embeddings into binary semantic fingerprints and search millions of documents locally with Hamming distance."
+readme = "README.md"
+authors = [{name = "Bryan Cosby"}]
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = []
+keywords = ["semantic-search", "hamming-distance", "binary-embeddings", "approximate-nearest-neighbor"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.scripts]
+semhash = "semhash.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["semhash*"]
